@@ -1,0 +1,32 @@
+<h1>Contractor to Country Relationships:</h1>
+{{#each foo}}
+{{this}}
+{{/each}}
+<table>
+    <thead> 
+        <th>Contractor</th> 
+        <th>Country</th> 
+    </thead> 
+    <tbody> 
+        {{#each contractorscountries}} 
+        <tr> 
+            <td>{{contractor_name}}</td> 
+            <td>{{country_name}}</td> 
+			<td><button onclick="deleteContractorCountry({{bid}}, {{cid}})">Delete</button></td>
+        </tr> 
+        {{/each}} 
+    </tbody> 
+    <form id="addcontractorcountry" action="/contractorscountries" method="post">
+		Contractor: <select name="bid"> 
+			{{#each contractors}}
+			<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select><br>
+		Country: <select name="cid"> 
+			{{#each countries}}
+			<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select><br>
+    <input type="submit" value="Submit">
+    </form>
+</table> 

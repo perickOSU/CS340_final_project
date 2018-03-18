@@ -19,6 +19,10 @@ app.set('mysql', mysql);
 
 app.use('/satellites', require('./satellites.js'));
 app.use('/launchvehicles', require('./launchvehicles.js'));
+app.use('/contractors', require('./contractors.js'));
+app.use('/countries', require('./countries.js'));
+app.use('/contractorscountries', require('./contractorscountries.js'));
+app.use('/satellitesfiltervehicle', require('./satellitesfiltervehicle.js'));
 
 app.use(function(req,res){
   res.status(404);

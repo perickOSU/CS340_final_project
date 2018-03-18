@@ -1,0 +1,25 @@
+<h1>Countries List:</h1>
+{{#each foo}}
+{{this}}
+{{/each}}
+<table>
+    <thead> 
+        <th>Id</th> 
+        <th>Name</th> 
+        <th>Population</th> 
+    </thead> 
+    <tbody> 
+        {{#each countries}} 
+        <tr> 
+            <td>{{id}}</td> 
+            <td>{{name}}</td> 
+            <td>{{population}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+    <form id="addcountry" action="/countries" method="post">
+		Name: <input type="text" name="name"><br>
+		Population: <input type="text" name="population"><br>
+		<input type="submit" value="Submit">
+    </form>
+</table> 

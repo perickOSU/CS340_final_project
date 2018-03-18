@@ -1,0 +1,25 @@
+<h1>Contractors List:</h1>
+{{#each foo}}
+{{this}}
+{{/each}}
+<table>
+    <thead> 
+        <th>Id</th> 
+        <th>Name</th> 
+        <th>Revenue</th> 
+    </thead> 
+    <tbody> 
+        {{#each contractors}} 
+        <tr> 
+            <td>{{id}}</td> 
+            <td>{{name}}</td> 
+            <td>{{revenue}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+    <form id="addcontractor" action="/contractors" method="post">
+		Name: <input type="text" name="name"><br>
+		Revenue: <input type="text" name="revenue"><br>
+		<input type="submit" value="Submit">
+    </form>
+</table> 

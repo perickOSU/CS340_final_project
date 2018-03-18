@@ -1,0 +1,30 @@
+<h1>Filter Satellites by Launch Vehicle:</h1>
+{{#each foo}}
+{{this}}
+{{/each}}
+<table>
+    <thead> 
+        <th>Id</th> 
+        <th>Name</th> 
+        <th>Lanuch Vehicle Used</th> 
+        <th>Longitude</th> 
+    </thead> 
+    <tbody> 
+        {{#each satellitesfiltervehicle}} 
+        <tr> 
+            <td>{{id}}</td> 
+            <td>{{name}}</td> 
+            <td>{{launch_vehicle}}</td> 
+            <td>{{longitude}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+    <form id="filtersatellite" action="/satellitesfiltervehicle" method="post">
+		Lanuch Vehicle: <select name="launch_vehicle"> 
+			{{#each launchvehicles}}
+				<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select><br>
+		<input type="submit" value="Submit">
+    </form>
+</table> 
