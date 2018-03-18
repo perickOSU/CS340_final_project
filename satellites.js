@@ -2,99 +2,99 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
 
-    function getPlanets(res, mysql, context, complete){
-        mysql.pool.query("SELECT id, name FROM bsg_planets", function(error, results, fields){
+    function getLaunchVehicle(res, mysql, context, complete){
+        mysql.pool.query("SELECT id, name FROM sat_launch_vehicle", function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.planets  = results;
+            context.launchvehicles  = results;
             complete();
         });
     }
 
-    function getPeople(res, mysql, context, complete){
-        mysql.pool.query("SELECT bsg_people.id, fname, lname, bsg_planets.name AS homeworld, age FROM bsg_people INNER JOIN bsg_planets ON homeworld = bsg_planets.id", function(error, results, fields){
+    function getSatellites(res, mysql, context, complete){
+        mysql.pool.query("SELECT sat_satellite.id, sat_satellite.name, sat_launch_vehicle.name AS launch_vehicle, longitude FROM sat_satellite INNER JOIN sat_launch_vehicle ON launch_vehicle = sat_launch_vehicle.id", function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.people = results;
+            context.satellites = results;
             complete();
         });
     }
 
-    function getPerson(res, mysql, context, id, complete){
-        var sql = "SELECT id, fname, lname, homeworld, age FROM bsg_people WHERE id = ?";
+    function getSatellite(res, mysql, context, id, complete){
+        var sql = "SELECT id, name, launch_vehicle, longitude FROM sat_satellite WHERE id = ?";
         var inserts = [id];
         mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }
-            context.person = results[0];
+            context.satellite = results[0];
             complete();
         });
     }
 
-    /*Display all people. Requires web based javascript to delete users with AJAX*/
+    /*Display all satellites. Requires web based javascript to delete users with AJAX*/
 
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-        context.jsscripts = ["deleteperson.js"];
+        context.jsscripts = ["deletesatellite.js"];
         var mysql = req.app.get('mysql');
-        getPeople(res, mysql, context, complete);
-        getPlanets(res, mysql, context, complete);
+        getSatellites(res, mysql, context, complete);
+        getLaunchVehicle(res, mysql, context, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 2){
-                res.render('people', context);
+                res.render('satellites', context);
             }
 
         }
     });
 
-    /* Display one person for the specific purpose of updating people */
+    /* Display one satellite for the specific purpose of updating satellites */
 
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
-        context.jsscripts = ["selectedplanet.js", "updateperson.js"];
+        context.jsscripts = ["selectedlaunchvehicle.js", "updatesatellite.js"];
         var mysql = req.app.get('mysql');
-        getPerson(res, mysql, context, req.params.id, complete);
-        getPlanets(res, mysql, context, complete);
+        getSatellite(res, mysql, context, req.params.id, complete);
+        getLaunchVehicle(res, mysql, context, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 2){
-                res.render('update-person', context);
+                res.render('update-satellite', context);
             }
 
         }
     });
 
-    /* Adds a person, redirects to the people page after adding */
+    /* Adds a satellite, redirects to the satellites page after adding */
 
     router.post('/', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO bsg_people (fname, lname, homeworld, age) VALUES (?,?,?,?)";
-        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age];
+        var sql = "INSERT INTO sat_satellite (name, launch_vehicle) VALUES (?,?)";
+        var inserts = [req.body.name, req.body.launch_vehicle];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
                 res.end();
             }else{
-                res.redirect('/people');
+                res.redirect('/satellites');
             }
         });
     });
 
-    /* The URI that update data is sent to in order to update a person */
+    /* The URI that update data is sent to in order to update a satellite */
 
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "UPDATE bsg_people SET fname=?, lname=?, homeworld=?, age=? WHERE id=?";
-        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age, req.params.id];
+        var sql = "UPDATE sat_satellite SET name=?, launch_vehicle=?, longitude=? WHERE id=?";
+        var inserts = [req.body.name, req.body.launch_vehicle, req.body.longitude, req.params.id];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -106,11 +106,11 @@ module.exports = function(){
         });
     });
 
-    /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */
+    /* Route to delete a satellite, simply returns a 202 upon success. Ajax will handle this. */
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
-        var sql = "DELETE FROM bsg_people WHERE id = ?";
+        var sql = "DELETE FROM sat_satellite WHERE id = ?";
         var inserts = [req.params.id];
         sql = mysql.pool.query(sql, inserts, function(error, results, fields){
             if(error){

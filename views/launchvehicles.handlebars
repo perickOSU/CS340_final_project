@@ -1,0 +1,25 @@
+<h1>Current launchvehicles:</h1>
+{{#each foo}}
+{{this}}
+{{/each}}
+<table>
+    <thead> 
+        <th>Id</th> 
+        <th>Name</th> 
+        <th>Lanuch Vehicle</th> 
+    </thead> 
+    <tbody> 
+        {{#each launchvehicles}} 
+        <tr> 
+            <td>{{id}}</td> 
+            <td>{{name}}</td> 
+            <td>{{payload_leo}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+    <form id="addlaunchvehicle" action="/launchvehicles" method="post">
+		Name: <input type="text" name="name"><br>
+		Payload to LEO: <input type="text" name="payload_leo"><br>
+		<input type="submit" value="Submit">
+    </form>
+</table> 

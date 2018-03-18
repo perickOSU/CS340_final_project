@@ -17,7 +17,8 @@ app.set('view engine', 'handlebars');
 app.set('port', process.argv[2]);
 app.set('mysql', mysql);
 
-app.use('/people', require('./people.js'));
+app.use('/satellites', require('./satellites.js'));
+app.use('/launchvehicles', require('./launchvehicles.js'));
 
 app.use(function(req,res){
   res.status(404);

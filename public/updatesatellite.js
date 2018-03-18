@@ -1,8 +1,8 @@
-function updatePerson(id){
+function updateSatellite(id){
     $.ajax({
-        url: '/people/' + id,
+        url: '/satellites/' + id,
         type: 'PUT',
-        data: $('#update-person').serialize(),
+        data: $('#update-satellite').serialize(),
         success: function(result){
             window.location.replace("./");
         }

@@ -1,0 +1,12 @@
+<h1>Update {{satellite.name}}:</h1>
+<form id="update-satellite" action="/satellites" method="post">
+    Name: <input type="text" name="name" value="{{satellite.name}}"><br>
+    Launch Vehicle: <select name="launch_vehicle" id="launchvehicle-selector"> 
+        {{#each launchvehicles}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    Longitude: <input type="text" name="longitude" value="{{satellite.longitude}}"><br>
+</form>
+<button onclick="updateSatellite({{satellite.id}})">Update</button>
+<script defer>selectLaunchVehicle({{satellite.launch_vehicle}});</script>
