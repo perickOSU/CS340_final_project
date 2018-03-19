@@ -1,0 +1,31 @@
+<h1>Countries that Own/Operatethe Satellites:</h1>
+{{#each foo}}
+{{this}}
+{{/each}}
+<table>
+    <thead> 
+        <th>Satellite</th> 
+        <th>Owner/Opperator of Satellite</th> 
+    </thead> 
+    <tbody> 
+        {{#each ownercountriessatellites}} 
+        <tr> 
+            <td>{{satellite_name}}</td> 
+            <td>{{country_name}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+    <form id="addownercontrysatellite" action="/ownercountriessatellites" method="post">
+		Satellite: <select name="sid"> 
+			{{#each satellites}}
+			<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select><br>
+		Country: <select name="cid"> 
+			{{#each countries}}
+			<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select><br>
+    <input type="submit" value="Submit">
+    </form>
+</table> 

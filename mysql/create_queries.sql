@@ -1,5 +1,7 @@
 /* clear a path for new tables... */
 
+DROP TABLE IF EXISTS `sat_contractor_satellite`;
+DROP TABLE IF EXISTS `sat_owner_country_satellite`;
 DROP TABLE IF EXISTS `sat_contractor_country`;
 DROP TABLE IF EXISTS `sat_satellite`;
 DROP TABLE IF EXISTS `sat_launch_vehicle`;
@@ -34,12 +36,6 @@ CREATE TABLE `sat_contractor` (
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
-/*
-LOCK TABLES `sat_contractor` WRITE;
-INSERT INTO `sat_contractor` VALUES (1,'Raptor'),(2,'Viper'),(3,'Mechanic'),(4,'Command');
-UNLOCK TABLES;
- */
 
 
 
@@ -89,12 +85,6 @@ CREATE TABLE `sat_satellite` (
 	CONSTRAINT `sat_satellite_ibfk_1` FOREIGN KEY (`launch_vehicle`) REFERENCES `sat_launch_vehicle` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
-/*
-LOCK TABLES `sat_satellite` WRITE;
-INSERT INTO `sat_satellite` VALUES (1,'William','Adama',3,61),(2,'Lee','Adama',3,30),(3,'Laura','Roslin',3,NULL),(4,'Kara','Thrace',3,NULL),(5,'Gaius','Baltar',3,NULL),(6,'Saul','Tigh',NULL,71),(7,'Karl','Agathon',1,NULL),(8,'Galen','Tyrol',1,32),(9,'Callandra','Henderson',NULL,NULL);
-UNLOCK TABLES;
-*/
-
 
 
 /*
@@ -106,13 +96,38 @@ CREATE TABLE `sat_contractor_country` (
 	`cid` int(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`bid`,`cid`),
 	KEY `cid` (`cid`),
-	CONSTRAINT `sat_contractor_country_ibfk_1` FOREIGN KEY (`bid`) REFERENCES `sat_contractor` (`id`),
-	CONSTRAINT `sat_contractor_country_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `sat_country` (`id`)
+	CONSTRAINT `sat_contractor_country_ibfk_1` FOREIGN KEY (`bid`) REFERENCES `sat_contractor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT `sat_contractor_country_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `sat_country` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
+
+
 /*
-LOCK TABLES `sat_contractor_country` WRITE;
-INSERT INTO `sat_contractor_country` VALUES (2,2),(4,2),(4,3),(2,4),(4,6),(1,7),(3,8),(3,9);
-UNLOCK TABLES;
-*/
+ * Table structure for table `sat_owner_country_satellite`
+ */
+
+CREATE TABLE `sat_owner_country_satellite` (
+	`cid` int(11) NOT NULL DEFAULT '0',
+	`sid` int(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`cid`,`sid`),
+	KEY `sid` (`sid`),
+	CONSTRAINT `sat_owner_country_satellite_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `sat_country` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT `sat_owner_country_satellite_ibfk_2` FOREIGN KEY (`sid`) REFERENCES `sat_satellite` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+/*
+ * Table structure for table `sat_contractor_satellite`
+ */
+
+CREATE TABLE `sat_contractor_satellite` (
+	`bid` int(11) NOT NULL DEFAULT '0',
+	`sid` int(11) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`bid`,`sid`),
+	KEY `sid` (`sid`),
+	CONSTRAINT `sat_contractor_satellite_ibfk_1` FOREIGN KEY (`bid`) REFERENCES `sat_contractor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT `sat_contractor_satellite_ibfk_2` FOREIGN KEY (`sid`) REFERENCES `sat_satellite` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -23,6 +23,8 @@ app.use('/contractors', require('./contractors.js'));
 app.use('/countries', require('./countries.js'));
 app.use('/contractorscountries', require('./contractorscountries.js'));
 app.use('/satellitesfiltervehicle', require('./satellitesfiltervehicle.js'));
+app.use('/ownercountriessatellites', require('./ownercountriessatellites.js'));
+app.use('/contractorssatellites', require('./contractorssatellites.js'));
 
 app.use(function(req,res){
   res.status(404);

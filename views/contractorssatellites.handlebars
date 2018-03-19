@@ -1,0 +1,31 @@
+<h1>Contractors that built the Satellite:</h1>
+{{#each foo}}
+{{this}}
+{{/each}}
+<table>
+    <thead> 
+        <th>Satellite</th> 
+        <th>Contractor</th> 
+    </thead> 
+    <tbody> 
+        {{#each contractorssatellites}} 
+        <tr> 
+            <td>{{satellite_name}}</td> 
+            <td>{{contractor_name}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+    <form id="addcontractorsatellite" action="/contractorssatellites" method="post">
+		Satellite: <select name="sid"> 
+			{{#each satellites}}
+			<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select><br>
+		Contractor: <select name="bid"> 
+			{{#each contractors}}
+			<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select><br>
+    <input type="submit" value="Submit">
+    </form>
+</table> 
